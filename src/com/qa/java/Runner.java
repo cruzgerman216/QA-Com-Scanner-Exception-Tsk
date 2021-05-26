@@ -18,17 +18,8 @@ public class Runner {
 			menu();
 			result = scanner.nextLine();
 			result = result.equals("") ? "exit" : result;
-			double a = 0;
-			double b = 0;
-			try {
-				System.out.println("Enter the first number");
-				a = Integer.parseInt(scanner.nextLine());
-				System.out.println("Enter the second number");
-				b = Integer.parseInt(scanner.nextLine());
-			} catch (NumberFormatException nfe) {
-				result = "Invalid";
-				System.out.println(nfe);
-			}
+			double a = getUserNumberInput();
+			double b = getUserNumberInput();
 
 			switch (result) {
 			case "1":
@@ -41,6 +32,15 @@ public class Runner {
 				System.out.println(a + " * " + b + " = " + Calculator.multiplication(a, b));
 				break;
 			case "4":
+				try {
+					if(b == 0) {
+						throw new ArithmeticException("You called this method inappropriately");
+					}
+				} catch(ArithmeticException e) {
+					System.out.println(e);
+					System.out.println("Invalid operation. Please Try Again");
+					break;
+				}
 				System.out.println(a + " / " + b + " = " + Calculator.division(a, b));
 				break;
 			case "exit":
@@ -49,7 +49,7 @@ public class Runner {
 				break;
 
 			default:
-				System.out.println("Try again");
+				System.out.println("Invalid operation, try again.");
 				break;
 			}
 
@@ -59,6 +59,21 @@ public class Runner {
 
 	public static void menu() {
 		System.out.println("Operations\n 1. add\n 2. subtract\n 3. multiplication\n 4. division\n");
+	}
+
+	public static int getUserNumberInput() {
+		int num = 0;
+		boolean flag = true;
+		while (flag) {
+			System.out.println("Type a number");
+			try {
+				num = Integer.parseInt(scanner.nextLine());
+				flag = false;
+			} catch (NumberFormatException NFE) {
+				System.out.println("Try again");
+			}
+		}
+		return num;
 	}
 
 }
